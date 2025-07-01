@@ -1,0 +1,36 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+.vercel/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Editor settings
+.vscode/
+.idea/
+
+# Coverage reports
+coverage/
+
+# Build output
+dist/
+build/
+
+# Optional: if using Turbo or Nx
+.turbo/
