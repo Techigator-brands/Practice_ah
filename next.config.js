@@ -12,17 +12,6 @@ const nextConfig = {
     // Disable some strict checks
     removeConsole: false,
   },
-  // images: {
-  //   domains: ['ahlesunnat.mws.ngo'], // add your image domain here
-  // },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "ahlesunnat.mws.ngo",
-      },
-    ],
-  },
 };
 
 module.exports = nextConfig;
