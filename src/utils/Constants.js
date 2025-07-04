@@ -1,5 +1,6 @@
-export default Constants = {
+const Constants = {
+  base_url: "https://ahlesunnat.mws.ngo/api/",
+  domain_url: "https://ahlesunnat.mws.ngo/",
+};
 
-    base_url : 'https://ahlesunnat.mws.ngo/api/',
-
-}
+export default Constants;

@@ -6,12 +6,39 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
+import { Utils } from "../src/utils";
+import {
+  fetchUserData,
+  createUser,
+  fetchAllUsers,
+  fetchHomeData,
+  clearError,
+  clearSuccess,
+  resetApiState,
+} from "../redux/slices/apiSlice";
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
+  const dispatch = useDispatch();
+  const {
+    userData,
+    allUsers,
+    homeData,
+    loading = false,
+    error,
+    createUserLoading,
+    createUserError,
+    createUserSuccess,
+  } = useSelector((state) => state.api);
+
   useEffect(() => {
     setIsClient(true);
+
+    // console.log("loading", loading);
+    dispatch(fetchHomeData());
+    console.log("homeData", homeData);
   }, []);
   const handleCountryChange = (e) => {
     setCountry(e.target.value);
@@ -37,185 +64,123 @@ export default function Home() {
             arrows={true}
             autoplaySpeed={4000}
           >
-            <div className="featured-item">
-              <div
-                style={{
-                  backgroundImage: "url(/assets/images/banner-top.jpg)",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: "100%",
-                  minHeight: "400px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100vh",
-                }}
-              >
-                <div className={styles.container}>
+            {homeData &&
+              homeData.data.banners.map((item) => (
+                <div className="featured-item">
                   <div
-                    className="featured-cap"
-                    style={{ textAlign: "center", color: "#fff" }}
+                    style={{
+                      backgroundImage:
+                        "url(" +
+                        Utils.get_image_url(
+                          item.banner_image,
+                          item.banner_image_path
+                        ) +
+                        ")",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      width: "100%",
+                      minHeight: "400px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100vh",
+                    }}
                   >
-                    <img
-                      src="/assets/images/resources/bsml-txt.png"
-                      alt="Bismillah Text"
-                      style={{ maxWidth: "300px", width: "100%" }}
-                    />
-                    <img
-                      src="/assets/images/resources/ayat-txt.png"
-                      alt="Ayat Text"
-                      style={{ maxWidth: "400px", width: "100%" }}
-                    />
-                    <img
-                      className="before-imge"
-                      src="/assets/images/pshape.png"
-                      alt=""
-                      style={{ maxWidth: "100px", width: "100%" }}
-                    />
-                    <h2 style={{ marginTop: "20px" }}>
-                      Welcome to Our New Full-Width Banner
-                    </h2>
-                    <span style={{ fontSize: "18px" }}>
-                      (A New Inspiring Message)
-                    </span>
+                    <div className={styles.container}>
+                      <div
+                        className="featured-cap"
+                        style={{ textAlign: "center", color: "#fff" }}
+                      >
+                        <img
+                          src={Utils.get_image_url(
+                            item.banner_image_2,
+                            item.banner_image_2_path
+                          )}
+                          alt="Bismillah Text"
+                          style={{ maxWidth: "700px", width: "100%" }}
+                        />
+                        {/* <img
+                          src="/assets/images/resources/ayat-txt.png"
+                          alt="Ayat Text"
+                          style={{ maxWidth: "400px", width: "100%" }}
+                        />
+                        <img
+                          className="before-imge"
+                          src="/assets/images/pshape.png"
+                          alt=""
+                          style={{ maxWidth: "100px", width: "100%" }}
+                        /> */}
+                        <h2 style={{ marginTop: "20px" }}>
+                          {item.banner_description}
+                        </h2>
+                        <span style={{ fontSize: "18px" }}>
+                          {item.banner_description_2}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="featured-item">
-              <div
-                style={{
-                  backgroundImage: "url(/assets/images/banner-top.jpg)",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: "100%",
-                  minHeight: "400px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100vh",
-                }}
-              >
-                <div className={styles.container}>
-                  <div
-                    className="featured-cap"
-                    style={{ textAlign: "center", color: "#fff" }}
-                  >
-                    <img
-                      src="/assets/images/resources/bsml-txt.png"
-                      alt="Bismillah Text"
-                      style={{ maxWidth: "300px", width: "100%" }}
-                    />
-                    <img
-                      src="/assets/images/resources/ayat-txt.png"
-                      alt="Ayat Text"
-                      style={{ maxWidth: "400px", width: "100%" }}
-                    />
-                    <img
-                      className="before-imge"
-                      src="/assets/images/pshape.png"
-                      alt=""
-                      style={{ maxWidth: "100px", width: "100%" }}
-                    />
-                    <h2 style={{ marginTop: "20px" }}>
-                      Welcome to Our New Full-Width Banner
-                    </h2>
-                    <span style={{ fontSize: "18px" }}>
-                      (A New Inspiring Message)
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              ))}
           </Slider>
           <div className={styles.container}>
-            {/* <section>
-        <div className="gap no-gap">
-          <div className="featured-area-wrap slider2 text-center">
-            <div className="featured-area owl-carousel">
-              <div
-                className="featured-item"
-                style={{
-                  backgroundImage: "url(/assets/images/banner-top.jpg)",
-                }}
-              >
-                <div className="featured-cap">
-                  <img
-                    src="/assets/images/resources/bsml-txt.png"
-                    alt="Bismillah Text"
-                  />
-                  <h1>
-                    <img
-                      src="/assets/images/resources/ayat-txt.png"
-                      alt="Ayat Text"
-                    />
-                  </h1>
-                  <img
-                    className="before-imge"
-                    src="/assets/images/pshape.png"
-                    alt=""
-                  />
-                  <h3>He Raised the Sky and Set Up the Balance</h3>
-                  <span>(Surah Al-Rahmaan Verse 7)</span>
-                  <Link href="#" legacyBehavior>
-                    <a className="theme-btn theme-bg brd-rd5">Read More</a>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-            <section>
-              <div className="gap">
-                <div className="container">
-                  <div className="abt-sec-wrp style2">
-                    <div className="row">
-                      <div className="col-md-6 col-sm-12 col-lg-6">
-                        <div className="abt-vdo style2 brd-rd5">
-                          <img
-                            src="/assets/images/about.jpg"
-                            alt="abt-img2.jpg"
-                            itemProp="image"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-sm-12 col-lg-6">
-                        <div className="abt-desc">
-                          <div className="sec-tl">
-                            <span className="theme-clr">Our History</span>
-                            <h2 itemProp="headline">About Islamic Center</h2>
-                            <img src="/assets/images/pshape.png" alt="" />
+            {homeData && (
+              <section>
+                <div className="gap">
+                  <div className="container">
+                    <div className="abt-sec-wrp style2">
+                      <div className="row">
+                        <div className="col-md-6 col-sm-12 col-lg-6">
+                          <div className="abt-vdo style2 brd-rd5">
+                            <img
+                              src="/assets/images/about.jpg"
+                              alt="abt-img2.jpg"
+                              itemProp="image"
+                            />
                           </div>
-                          <p itemProp="description">
-                            We established our center in 1954, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation
-                            ullamco laboris .Lorem ipsum dolor sit amet,
-                            consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua.
-                          </p>
-                          <p itemProp="description">
-                            Visit our premises sit amet, consectetur adipisicing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                          </p>
-                          <Link
-                            className="theme-btn theme-bg brd-rd5"
-                            href="/about"
-                            title=""
-                            itemProp="url"
-                          >
-                            READ MORE
-                          </Link>
+                        </div>
+                        {/* homeData.data.home_about_us */}
+                        <div className="col-md-6 col-sm-12 col-lg-6">
+                          <div className="abt-desc">
+                            <div className="sec-tl">
+                              <span className="theme-clr">
+                                {homeData.data.home_about_us.cms_page_name}
+                              </span>
+                              <h2 itemProp="headline">
+                                {homeData.data.home_about_us.cms_page_title}
+                              </h2>
+                              <img src="/assets/images/pshape.png" alt="" />
+                            </div>
+                            <div
+                              itemProp="description"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  homeData.data.home_about_us.cms_page_content,
+                              }}
+                            />
+                            {/* <p itemProp="description">
+                              
+                            </p>
+                            <p itemProp="description">
+                              Visit our premises sit amet, consectetur
+                              adipisicing elit, sed do eiusmod tempor incididunt
+                              ut labore et dolore magna aliqua.
+                            </p> */}
+                            <Link
+                              className="theme-btn theme-bg brd-rd5"
+                              href="/about"
+                              title=""
+                              itemProp="url"
+                            >
+                              READ MORE
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             <section>
               <div className="gap white-layer opc7">
@@ -225,7 +190,7 @@ export default function Home() {
                 ></div>
                 <div className="container">
                   <div className="sec-tl">
-                    <span className="theme-clr">Select Country & City For</span>
+                    {/* <span className="theme-clr">Select Country & City For</span> */}
                     <h2 itemProp="headline">Prayer Timings</h2>
                     <img src="/assets/images/pshape.png" alt="" />
                   </div>
@@ -242,47 +207,7 @@ export default function Home() {
                       </div>
                       <div className="col-md-7 col-sm-12 col-lg-7">
                         <div className="timing-data">
-                          <div className="cntry-selc">
-                            <select
-                              id="comboA"
-                              className="selec-wrp brd-rd5"
-                              value={country}
-                              onChange={handleCountryChange}
-                            >
-                              <option value="">Select Country</option>
-                              <option value="UAE">UAE</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="Pakistan">Pakistan</option>
-                            </select>
-
-                            <select
-                              className="selec-wrp brd-rd5"
-                              id="comboB"
-                              value={location}
-                              onChange={(e) => setLocation(e.target.value)}
-                            >
-                              <option value="">Select Location</option>
-                              {/* Always render all options but control visibility */}
-                              <option
-                                value="Dubai"
-                                hidden={isMounted && country !== "UAE"}
-                              >
-                                Dubai
-                              </option>
-                              <option
-                                value="Ankara"
-                                hidden={isMounted && country !== "Turkey"}
-                              >
-                                Ankara
-                              </option>
-                              <option
-                                value="Karachi"
-                                hidden={isMounted && country !== "Pakistan"}
-                              >
-                                Karachi
-                              </option>
-                            </select>
-                          </div>
+                          {/*  */}
                           <div id="result-update"></div>
                           <div className="prayer-timings text-center">
                             <table>
@@ -312,65 +237,20 @@ export default function Home() {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr className="">
-                                  <td>
-                                    <span>Fajar</span>
-                                  </td>
-                                  <td className="fajr-azan-time">03:24 am</td>
-                                  <td className="fajr-azan-prayer">04:30 am</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>SunRise</span>
-                                  </td>
-                                  <td className="sunrise-azan-time">
-                                    05:10 am
-                                  </td>
-                                  <td className="sunrise-azan-prayer">
-                                    05:10 am
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>Zohar</span>
-                                  </td>
-                                  <td className="zohar-azan-time">12:15 pm</td>
-                                  <td className="zohar-azan-prayer">
-                                    01:45 pm
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>Asar</span>
-                                  </td>
-                                  <td className="asr-azan-time">05:10 pm</td>
-                                  <td className="asr-azan-prayer">05:30 pm</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>Maghrib</span>
-                                  </td>
-                                  <td className="maghrib-azan-time">
-                                    07:15 pm
-                                  </td>
-                                  <td className="maghrib-azan-prayer">
-                                    07:20 pm
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>Isha</span>
-                                  </td>
-                                  <td className="isha-azan-time">09:05 pm</td>
-                                  <td className="isha-azan-prayer">09:25 pm</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <span>SunSet</span>
-                                  </td>
-                                  <td className="juma-azan-time">01:00 pm</td>
-                                  <td className="juma-azan-prayer">02:00 pm</td>
-                                </tr>
+                                {homeData &&
+                                  homeData.data.namaz_timings.map((item) => (
+                                    <tr className="">
+                                      <td>
+                                        <span>{item.namaz_name}</span>
+                                      </td>
+                                      <td className="fajr-azan-time">
+                                        {item.namaz_azan}
+                                      </td>
+                                      <td className="fajr-azan-prayer">
+                                        {item.namaz_time}
+                                      </td>
+                                    </tr>
+                                  ))}
                               </tbody>
                             </table>
                           </div>
@@ -392,192 +272,34 @@ export default function Home() {
                 />
                 <div className="container">
                   <div className="sec-tl text-center">
-                    <span className="theme-clr">Our Worldwide</span>
-                    <h2 itemProp="headline">Offered Services</h2>
+                    {/* <span className="theme-clr">Our Worldwide</span> */}
+                    <h2 itemProp="headline">Our Services</h2>
                     <img src="/assets/images/pshape.png" alt="" />
                   </div>
                   <div className="serv-wrp remove-ext3">
                     <div className="row">
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-book-open"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Islamic Books
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Quran Teaching sit amet, consectetur adipisicing
-                              elit, sed do eiusmod tempor incididunt
-                            </p>
+                      {homeData &&
+                        homeData.data.services.map((item) => (
+                          <div className="col-md-3 col-sm-6 col-lg-3">
+                            <div className="serv-bx text-center">
+                              <i className={item.service_icon}></i>
+                              <h5 itemProp="headline">
+                                <Link
+                                  href="/service-detail"
+                                  title=""
+                                  itemProp="url"
+                                >
+                                  {item.service_title}
+                                </Link>
+                              </h5>
+                              <div className="srv-inf theme-bg brd-rd10">
+                                <p itemProp="description">
+                                  {item.service_detail}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-person-praying"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/live-friday-sermon"
-                              title=""
-                              itemProp="url"
-                            >
-                              Live Friday Sermon
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Providing expenses amet, consectetur adipisicing
-                              elit, sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-book"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Islamic Aqaid Course
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Renovation of mosques sit amet, consectetur elit,
-                              sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-mobile"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Android Mobile Apps
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Gives food and shelter sit amet, consectetur elit,
-                              sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-comment"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Masjid e Habib Q/A
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Quran Teaching sit amet, consectetur adipisicing
-                              elit, sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-box"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/khazeena-emaan"
-                              title=""
-                              itemProp="url"
-                            >
-                              Khazeena-e-Emaan
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Providing expenses amet, consectetur adipisicing
-                              elit, sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-bullhorn"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Islahi Bayan
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Renovation of mosques sit amet, consectetur elit,
-                              sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-hands-holding"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Qaseedah Burdah
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Gives food and shelter sit amet, consectetur elit,
-                              sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-6 col-lg-3">
-                        <div className="serv-bx text-center">
-                          <i className="fa-solid fa-volume-high"></i>
-                          <h5 itemProp="headline">
-                            <Link
-                              href="/service-detail"
-                              title=""
-                              itemProp="url"
-                            >
-                              Audio Room
-                            </Link>
-                          </h5>
-                          <div className="srv-inf theme-bg brd-rd10">
-                            <p itemProp="description">
-                              Quran Teaching sit amet, consectetur adipisicing
-                              elit, sed do eiusmod tempor incididunt
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                        ))}
                     </div>
                   </div>
                 </div>

@@ -57,10 +57,10 @@ export default function Footer() {
                           Memon Masjid Muslehuddin Garden, Jodia Bazar, Karachi,
                           Pakistan.
                         </li>
-                        <li>
+                        {/* <li>
                           <i className="fas fa-fax theme-clr"></i>
                           (9221)-3243 1568
-                        </li>
+                        </li> */}
                       </ul>
                       <div className="scl1">
                         <a

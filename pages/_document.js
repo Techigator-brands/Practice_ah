@@ -43,16 +43,9 @@ export default function Document() {
         {/* <link rel="stylesheet" href="/css/external.css" /> */}
       </Head>
       <body>
-        {/* <div class="preloader">
-            <div class="loader-inner ball-scale-multiple">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div> */}
         <Main />
         <NextScript />
-        {/* <script src="/js/external.js" defer></script> */}
+        <script src="/js/external.js" defer></script>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/plugins.min.js"></script>
