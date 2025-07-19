@@ -23,6 +23,23 @@ function formatTime(time24) {
 }
 
 async function fetchLocation() {
+  // 1. Try browser geolocation
+  if (typeof window !== "undefined" && navigator.geolocation) {
+    try {
+      const pos = await new Promise((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
+      );
+      return {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        city: "Your Location",
+        country_name: "",
+      };
+    } catch (e) {
+      // User denied or error, fallback to IP
+    }
+  }
+  // 2. Fallback to IP-based
   try {
     let res = await fetch("https://ipapi.co/json/");
     if (res.ok) return await res.json();
@@ -39,6 +56,7 @@ async function fetchLocation() {
     }
     throw new Error("All location APIs failed");
   } catch {
+    // 3. Fallback: use a default location (e.g., Mecca)
     return {
       latitude: 21.3891,
       longitude: 39.8579,
@@ -157,6 +175,7 @@ const NamazTimings = () => {
       setError(null);
       try {
         const locData = await fetchLocation();
+        console.log('locData',locData);
         const { latitude, longitude, city, country_name } = locData;
         setLocation({ latitude, longitude, city, country_name });
         const today = new Date();
