@@ -23,27 +23,9 @@ function formatTime(time24) {
 }
 
 async function fetchLocation() {
-  // 1. Try browser geolocation
-  if (typeof window !== "undefined" && navigator.geolocation) {
-    try {
-      const pos = await new Promise((resolve, reject) =>
-        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
-      );
-      return {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-        city: "Your Location",
-        country_name: "",
-      };
-    } catch (e) {
-      // User denied or error, fallback to IP
-    }
-  }
-  // 2. Fallback to IP-based
+  // Try ipinfo.io first (HTTPS, more reliable)
   try {
-    let res = await fetch("https://ipapi.co/json/");
-    if (res.ok) return await res.json();
-    res = await fetch("https://ipinfo.io/json?token=YOUR_TOKEN_IF_NEEDED");
+    let res = await fetch("https://ipinfo.io/json?token=YOUR_TOKEN_IF_NEEDED");
     if (res.ok) {
       const data = await res.json();
       const [latitude, longitude] = data.loc.split(",");
@@ -52,18 +34,35 @@ async function fetchLocation() {
         longitude,
         city: data.city,
         country_name: data.country,
+        res: data,
       };
     }
-    throw new Error("All location APIs failed");
-  } catch {
-    // 3. Fallback: use a default location (e.g., Mecca)
-    return {
-      latitude: 21.3891,
-      longitude: 39.8579,
-      city: "Mecca",
-      country_name: "Saudi Arabia",
-    };
+  } catch (e) {
+    console.log("ipinfo.io failed", e);
   }
+  // Try ip-api.com (HTTP, may not work on HTTPS sites)
+  try {
+    let res = await fetch("http://ip-api.com/json/");
+    if (res.ok) {
+      const data = await res.json();
+      return {
+        latitude: data.lat,
+        longitude: data.lon,
+        city: data.city,
+        country_name: data.country,
+        res: data,
+      };
+    }
+  } catch (e) {
+    console.log("ip-api.com failed", e);
+  }
+  // Fallback: use a default location (e.g., Mecca)
+  return {
+    latitude: 21.3891,
+    longitude: 39.8579,
+    city: "Mecca",
+    country_name: "Saudi Arabia",
+  };
 }
 
 function getNextPrayer(timings) {
