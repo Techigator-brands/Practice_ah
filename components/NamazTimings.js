@@ -25,7 +25,7 @@ function formatTime(time24) {
 async function fetchLocation() {
   // Try ipinfo.io first (HTTPS, more reliable)
   try {
-    let res = await fetch("https://ipinfo.io/json?token=YOUR_TOKEN_IF_NEEDED");
+    let res = await fetch("https://ipinfo.io/json?token=0aaa18feea61f7");
     if (res.ok) {
       const data = await res.json();
       const [latitude, longitude] = data.loc.split(",");
