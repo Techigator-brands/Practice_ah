@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>ahelsunnat.net</title>
+        <title>Ahelsunnat </title>
         <meta
           name="description"
           content="Ahle Sunnat Front - Next.js Application"

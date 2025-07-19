@@ -18,6 +18,8 @@ import {
   clearSuccess,
   resetApiState,
 } from "../redux/slices/apiSlice";
+import NamazTimings from "../components/NamazTimings";
+import EventSlider from '../components/EventSlider';
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
@@ -182,85 +184,9 @@ export default function Home() {
               </section>
             )}
 
-            <section>
-              <div className="gap white-layer opc7">
-                <div
-                  className="fixed-bg"
-                  style={{ backgroundImage: "url(/assets/images/namaz.jpg)" }}
-                ></div>
-                <div className="container">
-                  <div className="sec-tl">
-                    {/* <span className="theme-clr">Select Country & City For</span> */}
-                    <h2 itemProp="headline">Prayer Timings</h2>
-                    <img src="/assets/images/pshape.png" alt="" />
-                  </div>
-                  <div className="prayer-timing-wrp">
-                    <div className="row">
-                      <div className="col-md-5 col-sm-12 col-lg-5">
-                        <div className="timing-mockp">
-                          <img
-                            src="/assets/images/namaz-time.png"
-                            alt="prayer-time-mockp.png"
-                            itemProp="image"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-7 col-sm-12 col-lg-7">
-                        <div className="timing-data">
-                          {/*  */}
-                          <div id="result-update"></div>
-                          <div className="prayer-timings text-center">
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>
-                                    <span>Name of Salat</span>
-                                    <img
-                                      src="/assets/images/pshape.png"
-                                      alt=""
-                                    />
-                                  </th>
-                                  <th>
-                                    <span>Azan Time</span>
-                                    <img
-                                      src="/assets/images/pshape.png"
-                                      alt=""
-                                    />
-                                  </th>
-                                  <th>
-                                    <span>Prayer Time</span>
-                                    <img
-                                      src="/assets/images/pshape.png"
-                                      alt=""
-                                    />
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {homeData &&
-                                  homeData.data.namaz_timings.map((item) => (
-                                    <tr className="">
-                                      <td>
-                                        <span>{item.namaz_name}</span>
-                                      </td>
-                                      <td className="fajr-azan-time">
-                                        {item.namaz_azan}
-                                      </td>
-                                      <td className="fajr-azan-prayer">
-                                        {item.namaz_time}
-                                      </td>
-                                    </tr>
-                                  ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <NamazTimings />
+
+            {/* <EventSlider /> */}
 
             <section>
               <div className="gap white-layer opc7">
